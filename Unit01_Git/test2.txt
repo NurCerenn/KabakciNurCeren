@@ -1,1 +1,3 @@
 this is my 2nd time trying here
+I'll use this notebook for my class notes
+git stores and saves the changes on the line as dif (difference) file changing just the updates lines
