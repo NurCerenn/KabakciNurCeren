@@ -21,3 +21,8 @@ import matplotlib.pyplot as plt
 data=pd.read_csv("ACPs_Breast_cancer.csv")
 print(type(data))
 print(data.head)
+print(data.columns)
+print(data.describe)
+print(data.shape)
+print(data.attrs)
+print(data.tail)
