@@ -1,5 +1,5 @@
 import numpy as np
-import pansas as pd
+import pandas as pd
 import math
 import scipy as sp
 from sklearn import tree
