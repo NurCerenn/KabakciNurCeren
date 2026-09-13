@@ -1,0 +1,16 @@
+from collections import Counter
+
+amino_acids="ACDEFGHIKLMNPQRSTVWY"
+
+def aac_encode(seq):
+    counts= Counter(seq)
+    lenght=len(seq)
+    return [counts.get(aa, 0)/lenght for aa in amino_acids]
+
+aac_features = df['SEQUENCE'].apply(aac_encode)
+
+I wrote this code, this is for encoding SEQUENCE data in my dataset. 
+
+I will first drop this column for classification and then -
+I will run the model by including SEQUENCE encoded column and see-
+if I ger any improvement in my model
