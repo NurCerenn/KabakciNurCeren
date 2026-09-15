@@ -14,3 +14,25 @@ I wrote this code, this is for encoding SEQUENCE data in my dataset.
 I will first drop this column for classification and then -
 I will run the model by including SEQUENCE encoded column and see-
 if I ger any improvement in my model
+
+
+%% Suggestions I like to remember and habit to build %%
+
+After loading a CSV → df.shape, df.head() — "does this look like the data I expect?"
+After a merge/join → check the row count didn't accidentally blow up or shrink
+After filtering → print(len(filtered_df)) — "did this remove roughly what I expected?"
+After a split like this → check proportions match
+
+
+# k-fold validation
+numgp=10
+gp=np.tile(np.arange(0, numgp), math.ceil(len(X_train)/numgp))
+gp=gp[0:len(X_train)]
+xerrs = np.repeat(np.nan, numgp)
+
+for counter in np.arange(0, numgp):
+    AMP_tree2.fit(X_train[gp !=counter], y_train[gp !=counter])
+    pred=AMP_tree2.predict(X_train[gp == counter])
+    xerrs[counter] = sum(pred != y_train[gp == counter]/sum(gp==counter))
+
+xerrs.mean()
