@@ -64,7 +64,7 @@ AMP_tree.fit(X_train,y_train)
 from sklearn.tree import plot_tree
 import matplotlib.pyplot as plt
 
-plt.figure(figsize = (25, 15), dpi = 80)
+plt.figure(figsize = (15, 10), dpi = 80)
 plot_tree(AMP_tree, feature_names = X.columns, class_names = y.unique().astype(str), filled=True, rounded=True)
 plt.title('Decision tree for the wine dataset')
 plt.show()
@@ -90,7 +90,7 @@ plt.show
 
 # k-fold validation
 numgp=10
-gp=np.tile(np.arange(0, numgp, math.ceil(len(X_train)/numgp)))
+gp=np.tile(np.arange(0, numgp), math.ceil(len(X_train)/numgp))
 gp=gp[0:len(X_train)]
 xerrs = np.repeat(np.nan, numgp)
 
