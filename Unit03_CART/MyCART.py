@@ -47,7 +47,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 print(y_train.value_counts(normalize=True))
 print(y_test.value_counts(normalize=True))
 
-
+#decition tree and fitting
 from sklearn  import tree
 from sklearn.ensemble import RandomForestClassifier
 
@@ -68,3 +68,36 @@ plt.figure(figsize = (25, 15), dpi = 80)
 plot_tree(AMP_tree, feature_names = X.columns, class_names = y.unique().astype(str), filled=True, rounded=True)
 plt.title('Decision tree for the wine dataset')
 plt.show()
+
+#predict and see how it works
+AMP_tree_pred=AMP_tree.predict(X_test)
+
+from sklearn import metrics
+from sklearn.model_selection import cross_val_score
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import ConfusionMatrixDisplay
+
+print(metrics.confusion_matrix(y_test,AMP_tree_pred))
+print(sum(AMP_tree_pred!=y_test)/len(y_test))
+print(classification_report(y_test, AMP_tree_pred))
+conf_matrix=confusion_matrix(y_test,AMP_tree_pred)
+disp_conf_matrix=ConfusionMatrixDisplay(confusion_matrix=conf_matrix)
+disp_conf_matrix.plot()
+plt.show
+
+# from this classification, my model is over fitted, it classifies perfectly
+
+# k-fold validation
+numgp=10
+gp=np.tile(np.arange(0, numgp, math.ceil(len(X_train)/numgp)))
+gp=gp[0:len(X_train)]
+xerrs = np.repeat(np.nan, numgp)
+
+
+for counter in np.arange(0, numgp):
+    AMP_tree.fit(X_train[gp !=counter], y_train[gp !=counter])
+    pred=AMP_tree.predict(X_train[gp == counter])
+    xerrs[counter] = sum(pred != y_train[gp == counter]/sum(gp==counter))
+
+xerrs.mean()
