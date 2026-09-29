@@ -307,4 +307,23 @@ print(1-my_rf.score(Xtest,ytest)) #0.0
 rferrs_t=1-cross_val_score(my_rf,Xtest,ytest,cv=10)
 print(rferrs_t.mean())  #0.04615384615384614
 
-# fiyuu, this wasn't so bad, actually pretty good I guess. 
+# fiyuu, this wasn't so bad, actually pretty good I guess.
+#lets predict
+my_rf_pred=my_rf.predict(Xtest)
+from sklearn.metrics import confusion_matrix
+print(metrics.confusion_matrix(ytest,my_rf_pred))
+print(1-metrics.accuracy_score(ytest,my_rf_pred))
+print(metrics.classification_report(ytest,my_rf_pred))
+
+from sklearn.metrics import ConfusionMatrixDisplay
+cmatrix_my_rf=confusion_matrix(ytest,my_rf_pred)
+disp_cmatrix_my_rf=ConfusionMatrixDisplay(confusion_matrix=cmatrix_my_rf)
+disp_cmatrix_my_rf.plot()
+print(disp_cmatrix_my_rf)
+
+
+ConfusionMatrixDisplay.from_predictions(my_rf_pred, ytest, cmap='Blues')
+plt.title("RF Confusion Matrix Test Data")
+plt.show 
+
+#tried to get confusion matrix figure but I wasnt successfull :(
