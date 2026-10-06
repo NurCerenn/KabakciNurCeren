@@ -56,7 +56,7 @@ print(d_per.shape)
 
 
 # first, defining the predictors
-Xtrain=d_train.iloc[:,0:15]  #first 16 colunms are the features
+Xtrain=d_train.iloc[:,0:16]  #first 16 colunms are the features
 ytrain=d_train.diabetes #'class' is the diabeties, what we will classify
 
 Xtest=d_test.iloc[:,0:15]
@@ -218,7 +218,7 @@ ax[3].set_ylabel("x-val error")
 fig.tight_layout()
 plt.show()
 
-# 0.006 
+# 0.006 alpha
 
 bestind=np.where(1-cvss<dl)[0].max()
 bestalpha=ccp_alphas[bestind]
