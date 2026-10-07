@@ -1,3 +1,5 @@
+#CLAUDE>> Lines tagged "#CLAUDE>>" were written by Claude (an AI); lines tagged
+#CLAUDE>> "#DAN>>" were written by Dan. These are learning suggestions only.
 import numpy as np
 import pandas as pd
 import math
@@ -98,6 +100,8 @@ for counter in np.arange(0,numgp):
     m_f.fit(Xval[gp!=counter], yval[gp!=counter])
 
     pred=m_d.predict(Xval[gp==counter])  #get predictions for the left out group and get error rates
+    #CLAUDE>> ISSUE: this overwrites `pred` before the m_d error is computed, so xerrs_m_d ends up identical
+    #CLAUDE>> to xerrs_m_f. Give each model its own prediction variable, as you did in MyCART.py.
     pred=m_f.predict(Xval[gp==counter])
 
     xerrs_m_d[counter]=sum(pred!=yval[gp==counter])/sum(gp==counter)

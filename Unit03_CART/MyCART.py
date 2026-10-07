@@ -1,6 +1,13 @@
+#CLAUDE>> Lines tagged "#CLAUDE>>" were written by Claude (an AI); lines tagged
+#CLAUDE>> "#DAN>>" were written by Dan. These are learning suggestions only.
 # This is my work for the assingment. I tried working with different datasets
 # including antimicrobial peptides, anticancer peptides classification
 # but i realized i dont have suitable dataset so decided going with Diabeties dataset
+
+# DAN>> I am sorry the other ones did not work out! Usually, fnding/building a 
+# DAN>> suitable dataset is, indeed, the hardest part! If you were trying to use
+# DAN>> to use one from your lab then you were undertaking a real challenge for 
+# DAN>> such a short-timeline assignment!
 
 # After long trial and error with different datasets
 # here will try to classify Diabeties risk of patient based on the sign and symptpom data 
@@ -56,6 +63,9 @@ print(d_per.shape)
 
 
 # first, defining the predictors
+#CLAUDE>> ISSUE: iloc[:,0:15] takes columns 0-14, which is 15 columns, so Obesity (the 16th feature) is
+#CLAUDE>> left out of every model. iloc[:,0:16] includes all 16. Same on the Xtest line below.
+# DAN>> I agree with Claude. It'll be worth it for you to review how python does indexing - it can be non-intuitive at first. 
 Xtrain=d_train.iloc[:,0:15]  #first 16 colunms are the features
 ytrain=d_train.diabetes #'class' is the diabeties, what we will classify
 
@@ -119,8 +129,17 @@ gp=gp[0:len(d_train)]
 xerrs_d=np.repeat(np.nan,numgp) #error of restricted tree
 xerrs_f=np.repeat(np.nan,numgp) #error of full tree
 
+#CLAUDE>> NOTE: in Python this makes a second NAME for the same object, so the loop refits mytree_d itself.
+#CLAUDE>> from sklearn.base import clone; mytree_d_s=clone(mytree_d) gives an independent copy.
 mytree_d_s=mytree_d
 mytree_f_s=mytree_f # we do this so that it doesn't overrides original trees
+# DAN>> Claude is right. This was actually an error in my code (since fixed). For a mutable object 
+# DAN>> x, the assignment y = x actually just creates a new *name*, y, which points to the same 
+# DAN>> underlying object as x. Any modifications to y will affect x as well. Do this instead:
+# DAN>> from sklearn.base import clone
+# DAN>> mytree_d_s=clone(mytree_d)
+# DAN>> mytree_f_s=clone(mytree_f)
+# DAN>> That make so-called "deep copies"
 
 for counter in np.arange(0,numgp):
     mytree_d_s.fit(Xtrain[gp!=counter], ytrain[gp!=counter])
@@ -131,6 +150,9 @@ for counter in np.arange(0,numgp):
     mytree_f_pred_s=mytree_f_s.predict(Xtrain[gp==counter])
     xerrs_f[counter]=sum(mytree_f_pred_s!=ytrain[gp==counter])/sum(gp==counter)
 
+#CLAUDE>> THINK: your full tree's CV error (0.041) is lower than the default's (0.131), the reverse of the
+#CLAUDE>> class breast-cancer result. Day 3 asks you to explain this in comments: why might a deep tree
+#CLAUDE>> generalize well on 16 yes/no symptom columns?
 print(xerrs_d.mean())  #0.1307692307692308
 print(xerrs_f.mean())  #0.041025641025641026
 
@@ -206,6 +228,7 @@ ax[2].set_ylabel("number of leaves")
 ax[3].plot(ccp_alphas, 1-cvss, marker="o")
 
 #geez this was a lovely challange to get used to coding visuals and get the syntax right
+# DAN>> Yes, plotting is usually a pain in the neck in any language
 
 for counter in np.arange(0,len(ccp_alphas)):
    ccp_alpha=ccp_alphas[counter]
@@ -220,6 +243,8 @@ plt.show()
 
 # 0.006 
 
+#CLAUDE>> GOOD: taking the largest alpha whose CV error is under the min + SE line picks the simplest
+#CLAUDE>> adequate tree. That is the 1-SE rule, and your plot shows the SE bars it relies on.
 bestind=np.where(1-cvss<dl)[0].max()
 bestalpha=ccp_alphas[bestind]
 print(1-cvss[bestind]) #0.03333333333333344
@@ -234,6 +259,7 @@ print(mytree_d.get_n_leaves())  #7
 
 
 # its bagging time, I was absent in this class, wish me luck
+# DAN>> You can always watch the recording, and you are encouraged to! That's why I make them!
 from sklearn.ensemble import BaggingClassifier
 
 estimator=tree.DecisionTreeClassifier(max_depth=None,min_samples_split=2,
@@ -244,6 +270,8 @@ m_bag=BaggingClassifier(estimator=estimator,n_estimators=500,oob_score=True,
                         n_jobs=6,random_state=202)
 print(type(m_bag))
 m_bag.fit(Xtrain,ytrain)
+#CLAUDE>> NOTE: 0 within-sample is expected here, since every bagged tree is full and memorizes its sample.
+#CLAUDE>> Your CV error just below (0.031) is the number that tells you how it does on new data.
 print(1-m_bag.score(Xtrain,ytrain))  # error rate is 0.0, overfitted?
 
 bagerrs_d=1-cross_val_score(m_bag,Xtrain,ytrain,cv=10)
@@ -263,11 +291,14 @@ rferrs_d=1-cross_val_score(my_rf,Xtrain,ytrain,cv=10)
 print(rferrs_d.mean()) #0.015384615384615396
 
 # wow RF did better, RF <3 me
+# DAN>> And your error is very low!
 
 #now lets see adaptive boosting
 from sklearn.ensemble import AdaBoostClassifier
 
 stump=tree.DecisionTreeClassifier(max_depth=1,random_state=1)
+#CLAUDE>> THINK: Day 6 asks you to try a few settings (n_estimators, learning_rate, stump depth) and let
+#CLAUDE>> cross_val_score decide. Does 100 stumps beat, say, 300?
 my_ada=AdaBoostClassifier(estimator=stump,n_estimators=100)
 my_ada.fit(Xtrain,ytrain)
 
@@ -280,6 +311,10 @@ print(adaerrs_d.mean()) #0.07435897435897434
 # one last model, gradient boosting with xgboost
 from xgboost import XGBClassifier
 
+#CLAUDE>> ISSUE: your labels were already made 0/1 by LabelEncoder (line 33), so ytrain=='M' is False
+#CLAUDE>> everywhere and ytrain_num is all zeros. XGBoost learns "always 0", which is why its error
+#CLAUDE>> shows 0.0. That isn't overfitting. Pass ytrain directly; it is already numeric.
+# DAN>>  I think this is the error which led to the apparent perfecet accuracy you repoted during your presentation!
 ytrain_num=(ytrain=='M').astype(int)
 
 my_xgb=XGBClassifier(n_estimators=500, max_depth=2,learning_rate=.05,
@@ -299,8 +334,12 @@ print(xgberrs_d.mean())
 
 # last but the not least, lets use our test dataset with our best model, RF
 
+#CLAUDE>> ISSUE: my_rf.fit(Xtest,ytest) trains the forest ON the test set, so 0.0 is it scoring its own
+#CLAUDE>> homework, and cross_val_score(...Xtest...) is CV inside the vault. For Day 7, fit on Xtrain/ytrain
+#CLAUDE>> (as at line 258) and call my_rf.predict(Xtest) once.
 my_rf=RandomForestClassifier(n_estimators=1000)
 my_rf.fit(Xtest,ytest)
+# DAN>> Agree with Claude - here you are re-training the RF on the test set!
 print(1-my_rf.score(Xtest,ytest)) #0.0
 
 # I'm crossing my fingers as I hit the run button
@@ -322,6 +361,8 @@ disp_cmatrix_my_rf.plot()
 print(disp_cmatrix_my_rf)
 
 
+#CLAUDE>> NOTE: from_predictions expects (y_true, y_pred), so swap these two. And plt.show two lines down
+#CLAUDE>> has no (), so it is never called. That is probably why no figure appeared.
 ConfusionMatrixDisplay.from_predictions(my_rf_pred, ytest, cmap='Blues')
 plt.title("RF Confusion Matrix Test Data")
 plt.show 
