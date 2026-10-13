@@ -39,7 +39,7 @@ def plot_histogram(slopes_df, label): # this formula is to plot histograms of th
        Output: draws a histogram."""
     plt.hist(slopes_df['slope'], bins=30)
     plt.axvline(0, color='red')
-    plt.title("Slopes of "+label+'vs year')
+    plt.title("Slopes of "+label+' vs year')
     plt.xlabel('Slope (change per year)')
     plt.ylabel("# of stations")
     plt.show()
