@@ -1,0 +1,16 @@
+# Module 3 - Slopes
+# slopes   = for each station with >= 40 measurements:
+#                   regress value on year, keep the slope
+# identify stations
+
+t_clean['name'].nunique()
+t_clean[['state','name']].drop_duplicates().shape[0]
+t_clean[['state','name','lon','lat']].drop_duplicates().shape[0]
+t_stations=t_clean.groupby('state','name').size()
+print((t_stations>=40).sum())
+
+p_clean['name'].nunique()
+p_clean[['state','name']].drop_duplicates().shape[0]
+p_clean[['state','name','lon','lat']].drop_duplicates().shape[0]
+p_stations=p_clean.groupby('state','name').size()
+print((p_stations>=40).sum())
