@@ -178,3 +178,23 @@ plot_map(p_slopes,'precipitation')
 
 #MODULARITY EXAMPLE: Lesson 3, I did a lot of back and forth 
 # in order to tune my script before I could get workable results
+# 
+# MODULARITY EXAMPLE: I tuned MY CODE FURTHER, wrote the functions into separate scriptscalled them in the main.py.
+#  it s actually really fun to write code in this way, much easier.
+
+# this is my attempt to write everythig into a single loop
+
+import read_data
+import analysis
+
+for path, label in [("UnitModularity/USAAnnualTemp1950_2008.rds", "temperature"),
+                    ("UnitModularity/USAAnnualPcpn1950_2008.rds", "precipitation")]:
+    df = read_data.load_data(path)
+    clean = read_data.clean_data(df)
+    slopes = analysis.compute_all_slopes(clean)
+    print(label, "stations:", len(slopes), "mean slope:", slopes["slope"].mean())
+    analysis.plot_histogram(slopes, label)
+    analysis.plot_map(slopes, label)
+
+#oh wow, it worked! WOW THIS IS REALLY COOL! I spent a lot of time writing the code 
+# and as I keep working on it my code got shorther and shorther. Wow. I'm glad that I enrolled in this class. Thank you.

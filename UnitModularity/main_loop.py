@@ -11,3 +11,4 @@ for path, label in [("UnitModularity/USAAnnualTemp1950_2008.rds", "temperature")
     print(label, "stations:", len(slopes), "mean slope:", slopes["slope"].mean())
     analysis.plot_histogram(slopes, label)
     analysis.plot_map(slopes, label)
+

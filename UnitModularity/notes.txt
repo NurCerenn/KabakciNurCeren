@@ -1,3 +1,55 @@
+read_p=pyreadr.read_r("UnitModularity/USAAnnualPcpn1950_2008.rds")
+print(read_p.keys())
+print(type(read_p))
+
+#I need to convert rds to pandas dataframe in order to work in py environment
+
+df_p=read_p[None]
+print(type(df_p))
+
+read_t=pyreadr.read_r("UnitModularity/USAAnnualTemp1950_2008.rds")
+print(read_t.keys())
+print(type(read_t))
+
+#I need to convert rds to pandas dataframe in order to work in py environment
+
+df_t=read_t[None]
+print(type(df_t))
+
+print(df_p.shape)
+print(df_p.head())
+print(df_p.tail())
+print(df_p.columns)
+print(df_p.dtypes)
+
+print(df_p.isna())
+print(df_p.isna().sum())
+#print(df_p.info())
+
+def clean_data(df):
+    return df.dropna()
+
+t_clean=clean_data(df_t)
+p_clean=clean_data(df_p)
+
+
+print(type(t_clean))
+print(type(p_clean))
+print(t_clean.columns)
+print(t_clean.columns.tolist())
+print(t_clean.index.names)
+print(p_clean.columns)
+print(p_clean.columns.tolist())
+print(p_clean.index.names)
+
+print(len(t_clean),len(p_clean))
+print(t_clean.isna().sum())
+print(p_clean.isna().sum())
+
+print(t_clean.notna().sum())
+print(p_clean.notna().sum())
+
+
 # Module 3 - Slopes
 # slopes   = for each station with >= 40 measurements:
 #                   regress value on year, keep the slope
@@ -14,3 +66,12 @@ p_clean[['state','name']].drop_duplicates().shape[0]
 p_clean[['state','name','lon','lat']].drop_duplicates().shape[0]
 p_stations=p_clean.groupby('state','name').size()
 print((p_stations>=40).sum())
+
+
+plt.savefig('map_'+label+'.png')
+    plt.show
+    plt.close
+
+
+plt.savefig('hist_'+label+'.png')
+    plt.close
