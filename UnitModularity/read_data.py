@@ -1,3 +1,5 @@
+#CLAUDE>> Lines tagged "#CLAUDE>>" were written by Claude (an AI); lines tagged
+#CLAUDE>> "#DAN>>" were written by Dan. These are learning suggestions only.
 #This script is to read and clean the data for the main.py 
 # this way if there's any other data set we can add into our analysis we can just load it and use it in the main.py
 
@@ -27,5 +29,7 @@ def check_data(df, title):
     print('column names:', df.columns.tolist())
     print('missing values per colunm:')
     print(df.isna().sum())
+    #CLAUDE>> NOTE: df.head without parentheses prints the method object, not the first rows (look at
+    #CLAUDE>> your output: it starts with "<bound method"). df.head() is what you meant.
     print(df.head)
     print()

@@ -1,3 +1,8 @@
+#CLAUDE>> Lines tagged "#CLAUDE>>" were written by Claude (an AI); lines tagged
+#CLAUDE>> "#DAN>>" were written by Dan. These are learning suggestions only.
+#CLAUDE>> GOOD: this twelve-line file is where the modular design pays off: the whole pipeline is
+#CLAUDE>> one loop over the two datasets, and a third climate variable would be one more tuple.
+#CLAUDE>> It could BE main.py, with the exploration kept in a separate script.
 # my attempt to write everythig into a single loop
 
 import read_data

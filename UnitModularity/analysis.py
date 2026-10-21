@@ -1,3 +1,5 @@
+#CLAUDE>> Lines tagged "#CLAUDE>>" were written by Claude (an AI); lines tagged
+#CLAUDE>> "#DAN>>" were written by Dan. These are learning suggestions only.
 from scipy.stats import linregress
 from scipy import stats
 import pandas as pd
@@ -11,6 +13,8 @@ def slope_each_station(station_df):  #this formula is to calculate a single slop
     return result.slope
 
 
+#CLAUDE>> GOOD: min_n=40 as a keyword argument with a default is lesson 1 and lesson 4 at once: the
+#CLAUDE>> constant has a name, it is part of the stated interface, and nothing inside reads a global.
 def compute_all_slopes(df, min_n=40): #this formula is to calculate all slopes 
     """Input: cleaned table with many stations.
        Output: table with one row per station (state, name, lon, lat, slope, n)."""
