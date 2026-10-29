@@ -12,7 +12,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Module 1: data load and screening
+
+# data load and screening
 
 columns = [
     "sex", "length", "diameter", "height",
@@ -23,14 +24,12 @@ columns = [
 data=pd.read_csv('Unit05_RegressionEtc/AbaloneData.csv', header=0, names=columns)
 print(data['sex'].unique())
 print("dtypes:", data.dtypes)
-#convert_dtypes={"length":float, "diameter":float, "height":float,
-    #"whole_weight":float, "shucked_weight":float, "viscera_weight":float,
-    #"shell_weight":float, "rings":float}
-#data=data.astype(convert_dtypes)
+
 data['sex']=data['sex'].astype('category')
 
 
 print("dtypes:", data.dtypes)
+
 
 # fist, let's get a good undertanding what this data looks like
 print('type:', type(data))
@@ -49,8 +48,8 @@ print("dtypes:", data.dtypes)
 # let's plot  histograms
 
 
-#cols_info=[data.count]
-#plt.hist(cols_info)
+cols_info=[data.count]
+plt.hist(cols_info)
 
 def hist_of_columns(data, bins=30):
     columns=data.select_dtypes('number').columns
@@ -72,12 +71,14 @@ def hist_each_column(data, column, bins=30):
         plt.show()
 
 column=data.select_dtypes('number').columns
-#hist_each_column(data, columns)
+hist_each_column(data, columns)
+
 
 corr_matrix=data.corr(numeric_only=True)
 print("correlation:", corr_matrix)
 print("Avarage correlation of each column with others:")
 print(corr_matrix.abs().mean().sort_values())
+
 
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -88,11 +89,12 @@ plt.show()
 
 
 
-# Module2: Model Building
+# Model Building
 
 from sklearn import tree
 X=pd.get_dummies(data.drop(columns='rings'), columns=['sex'])
 y=data['rings']
+
 
 from sklearn.model_selection import train_test_split, cross_val_score
 X_val, X_test, y_val, y_test=train_test_split(X,y, test_size=0.25, random_state=42)
@@ -103,6 +105,7 @@ print(X_val.head())
 print(y_val.head())
 print(X_val['shell_weight'].shape)
 
+
 mytree=tree.DecisionTreeRegressor(max_depth=2,min_samples_split=20,
                                   min_samples_leaf=7,ccp_alpha=0.01,random_state=101)
 
@@ -110,12 +113,14 @@ mytree.fit(X_val,y_val)
 print(mytree.get_depth(),mytree.get_n_leaves())
 print(tree.export_text(mytree, feature_names=list(X_val.columns)))
 
+
 # lets print our tree
 from sklearn.tree import plot_tree, export_text
 
 plt.figure(figsize=(16,8))
 plot_tree(mytree, feature_names=X.columns, filled=True)
 plt.show()
+
 
 pred1=mytree.predict(X_val)
 
@@ -132,11 +137,13 @@ from sklearn.metrics import mean_squared_error, r2_score
 rmse1 = np.sqrt(mean_squared_error(y_val, pred1))
 r2_1 = r2_score(y_val, pred1)
 
+
 tree_full = tree.DecisionTreeRegressor(
     max_depth=None, min_samples_leaf=1, ccp_alpha=0.0, random_state=42
 )
 tree_full.fit(X_val, y_val)
 rmse_full = np.sqrt(mean_squared_error(y_val, tree_full.predict(X_val)))
+
 
 from sklearn.model_selection import cross_val_score, KFold
 
@@ -174,12 +181,14 @@ print("full tree rmse in-sample-error:", rmse_full)
 
 #BEFORE PICKING A MODEL, lets do a bagging and RF, and see how they perform
 
+
 # Bagging
 from sklearn.ensemble import BaggingRegressor
 m_bag= BaggingRegressor(estimator=tree.DecisionTreeRegressor(), n_estimators=500,
                             oob_score=True)
 
 m_bag.fit(X_val,y_val)
+
 
 #RF
 from sklearn.ensemble import RandomForestRegressor
@@ -190,6 +199,8 @@ print('RF values:')
 print(m_rf.get_params()['max_features'])
 print(m_rf.n_features_in_) #How many predictor columns did you receive when I fitted you? -> 10
 print(m_rf.estimators_[0].max_features_)
+
+
 
 #scores:
 #   out-of-sample
@@ -229,6 +240,7 @@ print('m_lin cross-validation:', cv_rmse(m_lin))
 # but stating it like this also doesn't feels right to me either, since I know the abolone data. 
 # OR maybe it means that this data is NOT suitable for the linear models and we should evaluate other models.
 
+
 # I choose RF model to move forward and test with the vault data, which performed the best for me
 
 rf_pred=m_rf.predict(X_test)
@@ -239,6 +251,8 @@ rf_rmse = np.sqrt(mean_squared_error(y_test, rf_pred))
 print("RF test rmes:", rf_rmse)
 print("RF test r2", rf_r2)
 
+
+
 # predicted vs observed
 
 plt.scatter(y_test, rf_pred, alpha=0.3)
@@ -248,3 +262,5 @@ plt.xlabel('Observed Rings (test data)')
 plt.ylabel('Predicted Rings (test data)')
 plt.title('RF predicted vs. observed, test set')
 plt.show()
+
+

@@ -1,0 +1,45 @@
+# For this assignment, I choose to work with thw Abalone data. 
+# The general plan is to first study and understand the data I'm working with, 
+# do neccessary cleaning and modifications
+
+
+def histogram_each_column(data, columns, bins=30):
+    '''for each colunm, make a histogram of that colunm and shor it'''
+    
+    for name in columns:
+        plt.hist(data[name], bins=bins)
+        plt.title(name)
+        plt.xlabel(name)
+        plt.ylabel('counts')
+        plt.show()
+
+        
+plt.hist(data['Length'], bins=30)
+plt.xlabel('Length')
+plt.ylabel('counts')
+plt.show()
+
+
+
+def histogram_each_column(data, columns, bins=30):
+    '''for each colunm, make a histogram of that colunm and show it'''
+    
+    for name in columns:
+        plt.hist(data[name], bins=bins)
+        plt.title(name)
+        plt.xlabel(name)
+        plt.ylabel('counts')
+        plt.show()
+    
+cols=data.columns
+histogram_each_column(data, cols)
+
+
+{"Length":float, "Diameter":float, "Height":float,
+    "Whole_weight":float, "Shucked_weight":float, "Viscera_weight":float,
+    "Shell_weight":float, "Rings":
+
+
+dtype={"length":float, "diameter":float, "height":float,
+    "whole_weight":float, "shucked_weight":float, "viscera_weight":float,
+    "shell_weight":float, "rings":float})
