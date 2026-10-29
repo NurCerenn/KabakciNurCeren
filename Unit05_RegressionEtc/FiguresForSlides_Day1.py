@@ -14,7 +14,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn import tree
 
-d=pd.read_csv("UnitCaret/AbaloneData.csv")
+d=pd.read_csv("Unit_RegressionEtc/AbaloneData.csv")
 d.sex=d.sex.astype("category")
 
 #**a one-predictor tree, to show that a regression tree is a step function
