@@ -1,0 +1,48 @@
+This is BibTeX, Version 0.99e
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: LatexSimpleExample_Paper.aux
+Reallocating 'name_of_file' (item size: 1) to 17 items.
+The style file: ecology_letters2.bst
+Reallocating 'name_of_file' (item size: 1) to 5 items.
+Database file #1: refs.bib
+You've used 1 entry,
+            2860 wiz_defined-function locations,
+            645 strings with 5103 characters,
+and the built_in function-call counts, 715 in all, are:
+= -- 56
+> -- 58
+< -- 0
++ -- 22
+- -- 21
+* -- 75
+:= -- 138
+add.period$ -- 3
+call.type$ -- 1
+change.case$ -- 12
+chr.to.int$ -- 1
+cite$ -- 1
+duplicate$ -- 21
+empty$ -- 33
+format.name$ -- 24
+if$ -- 125
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 1
+newline$ -- 12
+num.names$ -- 4
+pop$ -- 11
+preamble$ -- 1
+purify$ -- 11
+quote$ -- 0
+skip$ -- 13
+stack$ -- 0
+substring$ -- 32
+swap$ -- 5
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 9
+warning$ -- 0
+while$ -- 4
+width$ -- 0
+write$ -- 19
