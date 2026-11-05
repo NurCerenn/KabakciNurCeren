@@ -1,0 +1,16 @@
+\begin{thebibliography}{1}
+
+\bibitem{islam2020}
+M.~M.~Faniqul Islam, Rahatara Ferdousi, Sadikur Rahman, and Humayra~Yasmin
+  Bushra.
+\newblock Likelihood prediction of diabetes at early stage using data mining
+  techniques.
+\newblock In {\em Computer Vision and Machine Intelligence in Medical Image
+  Analysis}, pages 113--125. Springer, 2020.
+
+\bibitem{pedregosa2011}
+Fabian Pedregosa et~al.
+\newblock Scikit-learn: Machine learning in {P}ython.
+\newblock {\em Journal of Machine Learning Research}, 12:2825--2830, 2011.
+
+\end{thebibliography}
